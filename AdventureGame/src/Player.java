@@ -9,6 +9,8 @@ public class Player {
     private String name;
     private Scanner input = new Scanner(System.in);
     private Inventory inventory ;
+    private int orjinalMoney;  // alanı bitirme koşulunda kullanılcak
+    private String booty = " ";// ganimetler
 
     public Player(String name){
         this.name = name;
@@ -68,6 +70,7 @@ public class Player {
         this.setOrjinalHealth(gameChar.getHealth());
         this.setMoney(gameChar.getMoney());
         this.setCharName(gameChar.getName());
+        this.setOrjinalMoney(gameChar.getMoney()); // Alanı bitirme koşulunda kullanılcak
     }
     public void printInfo(){
         System.out.println("Silahınız: " + this.getInventory().getWeapon().getName() +
@@ -75,7 +78,8 @@ public class Player {
                 ", Bloklama: " + this.getInventory().getArmor().getBlock() +
                 ", Hasarınız: " + this.getTotalDamage() +
                 ", Sağlık: " + this.getHealth()  +
-                ", Paranız: " + this.getMoney());
+                ", Paranız: " + this.getMoney() +
+                ", Ganimetleriniz: " + this.getBooty());
     }
     public int getTotalDamage(){
         return damage + this.getInventory().getWeapon().getDamage();
@@ -124,5 +128,19 @@ public class Player {
     }
     public void setInventory(Inventory inventory){
         this.inventory = inventory;
+    }
+    public int getOrjinalMoney(){
+        return orjinalMoney;
+    }
+    public void setOrjinalMoney(int orjinalMoney){
+        this.orjinalMoney = orjinalMoney;
+    }
+
+    public String getBooty() {
+        return booty;
+    }
+
+    public void setBooty(String booty) {
+        this.booty = booty;
     }
 }

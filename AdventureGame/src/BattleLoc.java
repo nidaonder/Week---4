@@ -1,3 +1,4 @@
+import java.awt.font.TextHitInfo;
 import java.util.Random;
 
 public abstract class BattleLoc extends Location{
@@ -20,7 +21,8 @@ public abstract class BattleLoc extends Location{
         System.out.print("<S>avaş veya <K>aç : ");
         String selectCase = input.nextLine().toUpperCase();
         if (selectCase.equals("S") && war(mnsNumber)){
-            System.out.println(this.getName() + " tüm düşmanları yendiniz!->onlocation");
+            System.out.println(this.getName() + " tüm düşmanları yendiniz!");
+            gainBooty();
             return true;
         }
         if (this.getPlayer().getHealth() <= 0){
@@ -75,8 +77,9 @@ public abstract class BattleLoc extends Location{
             }
             if (this.getMonster().getHealth() < this.getPlayer().getHealth()){
                 System.out.println("Düşmanı yendiniz!!");
-                System.out.println(this.getMonster().getAward() + " para kazandınız.");
-                this.getPlayer().setMoney(this.getPlayer().getMoney() + this.getMonster().getAward());
+                int earnMoney = this.getMonster().getAward(); // Kazanılan para!!
+                System.out.println(earnMoney + " para kazandınız.");
+                this.getPlayer().setMoney(this.getPlayer().getMoney() + earnMoney);
                 System.out.println("Güncel paranız: " + this.getPlayer().getMoney());
             } else {
                 return false;
@@ -85,12 +88,12 @@ public abstract class BattleLoc extends Location{
         return true;
     }
     public boolean monsterAttack(int mnsNumber){
-        System.out.println("Monster ilk vuruyor");
+        System.out.println("İlk monster vuruyor.");
         for (int i = 1; i <= mnsNumber; i++){
             resetMonsterHealth();
             playerStats();
             monsterStats(i);
-            while (this.getPlayer().getHealth() > 0 && this.getMonster().getHealth() >0){
+            while (this.getPlayer().getHealth() > 0 && this.getMonster().getHealth() > 0){
                 System.out.println("Canavar size vurdu !!");
                 int receivedDamage = this.getMonster().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
                 if (receivedDamage < 0){
@@ -112,14 +115,19 @@ public abstract class BattleLoc extends Location{
             }
             if (this.getMonster().getHealth() < this.getPlayer().getHealth()){
                 System.out.println("Düşmanı yendiniz !!");
-                System.out.println(this.getMonster().getAward() + " para kazandınız.");
-                this.getPlayer().setMoney(this.getPlayer().getMoney() + this.getMonster().getAward());
+                int earnMoney = this.getMonster().getAward();
+                System.out.println(earnMoney + " para kazandınız.");
+                this.getPlayer().setMoney(this.getPlayer().getMoney() + earnMoney);
                 System.out.println("Güncel paranız: " + this.getPlayer().getMoney());
             } else {
                 return false;
             }
         }
         return true;
+    }
+    public void gainBooty(){
+        System.out.println("TEBRİKLER! " + this.award + " KAZANDINIZ!!");
+        this.getPlayer().setBooty(this.getPlayer().getBooty() + this.getAward());
     }
     public void resetMonsterHealth(){
         this.getMonster().setHealth(this.getMonster().getOrjinalHealth());
@@ -138,6 +146,7 @@ public abstract class BattleLoc extends Location{
         System.out.println("Zırh: " + this.getPlayer().getInventory().getArmor().getName());
         System.out.println("Bloklama: " + this.getPlayer().getInventory().getArmor().getBlock());
         System.out.println("Para: " + this.getPlayer().getMoney());
+        System.out.println("Ganimetler: " + this.getPlayer().getBooty());
         System.out.println();
     }
     public void monsterStats(int i){

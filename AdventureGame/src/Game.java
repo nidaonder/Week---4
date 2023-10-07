@@ -2,11 +2,12 @@ import java.util.Scanner;
 
 public class Game {
     private Scanner input = new Scanner(System.in);
+    private Player player;
     public void start(){
         System.out.println("MACERA OYUNUNA HOŞGELDİNİZ!");
         System.out.print("Lütfen bir isim giriniz : ");
         String playerName = input.nextLine();
-        Player player = new Player(playerName);
+        player = new Player(playerName);
         System.out.println("Sayın " + player.getName() + ", bu karanlık ve sisli adaya hoşgeldin!" +
                 "\nBurada yaşananların hepsi gerçek!");
         System.out.println("Lütfen bir karakter seçiniz!");
@@ -39,13 +40,31 @@ public class Game {
                     break;
                 case 3:
                     location = new Cave(player);
-                    break;
+                    if (this.getPlayer().getBooty().contains("food")){
+                        System.out.println("Mağara ödülünü aldınız! Güvenli eve yönlendiriliyorsunuz!");
+                        location = new SafeHouse(player);
+                        break;
+                    } else {
+                        break;
+                    }
                 case 4:
                     location = new Forest(player);
-                    break;
+                    if (this.getPlayer().getBooty().contains("firewood")){
+                        System.out.println("Orman ödülünü aldınız! Güvenli eve yönlendiriliyorsunuz!");
+                        location = new SafeHouse(player);
+                        break;
+                    } else {
+                        break;
+                    }
                 case 5:
                     location = new River(player);
-                    break;
+                    if (this.getPlayer().getBooty().contains("water")){
+                        System.out.println("Nehir ödülünü aldınız! Güvenli eve yönlendiriliyorsunuz!");
+                        location = new SafeHouse(player);
+                        break;
+                    } else {
+                        break;
+                    }
                 default:
                     System.out.println("Lütfen geçerli bir bölge giriniz.");
             }
@@ -57,6 +76,21 @@ public class Game {
                 System.out.println("GAME OVER!");
                 break;
             }
+            if (isWin()){
+                System.out.println("BÜTÜN GANİMETLERİ TOPLAYARAK OYUNU KAZANDINIZ! TEBRİK EDERİZ!");
+                break;
+            }
         }
+    }
+    public boolean isWin(){
+        return this.getPlayer().getBooty().contains("food") &&
+                this.getPlayer().getBooty().contains("firewood") &&
+                this.getPlayer().getBooty().contains("water");
+    }
+    public Player getPlayer() {
+        return player;
+    }
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }
