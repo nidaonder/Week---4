@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Monster {
     private int id;
     private String name;
